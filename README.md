@@ -24,6 +24,8 @@ To end the project, you have to run the following command in your favorite termi
 You don't have to remove the containers, because they will be removed automatically. Also the --remove-orphans option is useful if you want to remove all the containers, that exist after your build the same project multiple times. By having --remove-orphans you save your ram. 
 
 ## What you need to change before you start?
+git clone
+Change the folder name to your project name.
 Project.toml -> Change anything in here what you want.
 docker-compose.yml:
 -> Change the port
