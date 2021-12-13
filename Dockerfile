@@ -29,19 +29,19 @@ ENV PATH $PYENV_HOME/shims:$PYENV_HOME/bin:$PATH
 
 RUN pyenv install $PYTHON_VERSION
 RUN pyenv global $PYTHON_VERSION
+RUN julia -e 'ENV["PYTHON"]= "/root/.pyenv/versions/3.7.2/bin"'
+#/root/.pyenv/versions/3.7.2/libexec
 RUN pip install --upgrade pip && pyenv rehash
 
 # Clean
 RUN rm -rf ~/.cache/pip
 
-RUN julia -e 'ENV["PYTHON"]= "./root/.pyenv/versions/3.7.2"'
 RUN apk --update add libxml2-dev libxslt-dev libffi-dev gcc musl-dev libgcc openssl-dev curl
 RUN apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev
-RUN pip install Pillow
 
 RUN pip install -r requirements.txt
-RUN julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.build("PyCall")';
-RUN julia -e 'using Pkg; Pkg.instantiate(); Pkg.precompile();'
+RUN julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.build("PyCall"); Pkg.instantiate(); Pkg.precompile();'
+
 
 ENTRYPOINT [ "julia" ]
 CMD [ "src/docker_runs_checker.jl"]
