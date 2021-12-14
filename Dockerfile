@@ -29,7 +29,6 @@ ENV PATH $PYENV_HOME/shims:$PYENV_HOME/bin:$PATH
 
 RUN pyenv install $PYTHON_VERSION
 RUN pyenv global $PYTHON_VERSION
-RUN julia -e 'ENV["PYTHON"]= "/root/.pyenv/versions/3.7.2/bin"'
 #/root/.pyenv/versions/3.7.2/libexec
 RUN pip install --upgrade pip && pyenv rehash
 
@@ -38,9 +37,15 @@ RUN rm -rf ~/.cache/pip
 
 RUN apk --update add libxml2-dev libxslt-dev libffi-dev gcc musl-dev libgcc openssl-dev curl
 RUN apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev
-
+RUN apk add python3-dev
 RUN pip install -r requirements.txt
-RUN julia -e 'using Pkg; Pkg.add("PyCall"); Pkg.build("PyCall"); Pkg.instantiate(); Pkg.precompile();'
+
+RUN julia -e 'ENV["PYTHON"]="/root/.pyenv/versions/3.7.2/bin/python"'
+RUN julia -e 'using Pkg'
+RUN julia -e 'Pkg.add("PyCall")'
+RUN julia -e 'using PyCall'
+RUN julia -e 'Pkg.build("PyCall")'
+RUN julia -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()'
 
 
 ENTRYPOINT [ "julia" ]
