@@ -1,52 +1,29 @@
-FROM julia:1.7.0-alpine3.15
+FROM julia:1.6.4
 
 WORKDIR /app
 ADD / /app
 
-RUN apk add linux-headers
-# Update & Install dependencies
-RUN apk add --no-cache --update \
-    git \
-    bash \
-    libffi-dev \
-    openssl-dev \
-    bzip2-dev \
-    zlib-dev \
-    readline-dev \
-    sqlite-dev \
-    build-base
+# Start -> Install Miniconda Part 
+ENV PATH="/root/miniconda3/bin:${PATH}"
+ARG PATH="/root/miniconda3/bin:${PATH}"
+RUN apt-get update
+RUN apt-get install -y wget && rm -rf /var/lib/apt/lists/*
+RUN wget \
+    https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    && mkdir /root/.conda \
+    && bash Miniconda3-latest-Linux-x86_64.sh -b \
+    && rm -f Miniconda3-latest-Linux-x86_64.sh 
+# End -> Install Miniconda Part
 
-# Set Python version
-ARG PYTHON_VERSION='3.7.2'
-# Set pyenv home
-ARG PYENV_HOME=/root/.pyenv
+# Start -> Install Your Python Deppendencies Part (Edit enviroments.yml)
+RUN conda env create environment.yml
+# End -> Install Your Python Deppendencies Part
 
-# Install pyenv, then install python versions
-RUN git clone --depth 1 https://github.com/pyenv/pyenv.git $PYENV_HOME && \
-    rm -rfv $PYENV_HOME/.git
-
-ENV PATH $PYENV_HOME/shims:$PYENV_HOME/bin:$PATH
-
-RUN pyenv install $PYTHON_VERSION
-RUN pyenv global $PYTHON_VERSION
-#/root/.pyenv/versions/3.7.2/libexec
-RUN pip install --upgrade pip && pyenv rehash
-
-# Clean
-RUN rm -rf ~/.cache/pip
-
-RUN apk --update add libxml2-dev libxslt-dev libffi-dev gcc musl-dev libgcc openssl-dev curl
-RUN apk add jpeg-dev zlib-dev freetype-dev lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev
-RUN apk add python3-dev
-RUN pip install -r requirements.txt
-
-RUN julia -e 'ENV["PYTHON"]="/root/.pyenv/versions/3.7.2/bin/python"'
-RUN julia -e 'using Pkg'
-RUN julia -e 'Pkg.add("PyCall")'
-RUN julia -e 'using PyCall'
-RUN julia -e 'Pkg.build("PyCall")'
-RUN julia -e 'using Pkg; Pkg.instantiate(); Pkg.precompile()'
-
+# Start -> Install Julia [deps]
+RUN julia ./src/start/config_project.jl
+RUN rm ./src/start/config_project.jl
+# End -> Install Julia [deps]
+EXPOSE 3838
 
 ENTRYPOINT [ "julia" ]
-CMD [ "src/docker_runs_checker.jl"]
+CMD [ "src/julia_docker_compose_template.jl"]

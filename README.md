@@ -34,3 +34,8 @@ docker-compose.yml:
 -> "julia-docker" to a different docker image name if you want
 -> change ports in the "ports" section
 -> add whatever you need, like environment variables, volumes, etc.
+
+## How to use it without Docker?
+1. Install all requirements (Your Python version [Default 3.7] and packages)-> cmd in the same folder where the enviroment.yml is and "conda activate condaDockerEnvironment"
+2. CMD "julia" + "]" + "activate ."
+3. Run by cmd "julia src/docker_runs_check.jl"

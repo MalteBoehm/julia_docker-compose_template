@@ -1,7 +1,10 @@
-name = "replace_me_projectName"
-uuid = "yourID"
-authors = ["YourName <YourEmail@gmail.com>"]
+name = "julia_docker_compose_template"
+uuid = "4db1448c-e4c9-4442-8e69-4dd87194702d"
+authors = ["Malte Boehm <boemalte@gmail.com>"]
 version = "0.1.0"
 
 [deps]
-HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+PyCall = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
+
+[compat]
+julia = "1"
