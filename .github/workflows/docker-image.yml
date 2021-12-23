@@ -23,7 +23,6 @@ jobs:
    steps:
     - uses: actions/checkout@master
     - name: Archive Release
-      
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
@@ -32,5 +31,5 @@ jobs:
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "julia-docker-template.zip"
+        artifacts: 'julia-docker-template.zip'
         token: ${{ secrets.GITHUB_TOKEN }}
