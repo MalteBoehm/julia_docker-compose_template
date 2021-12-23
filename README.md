@@ -12,12 +12,10 @@ To start the project, you have to run the following command in your favorite ter
     docker-compose up -d
 
 ### What happens when you start?
-1. Docker pulls and creates a Container julia:1.7.0-alpine3.15 image from Docker Hub.
-2. Docker creates a WORKDIR and moves your the current code into /app
-3. Docker runs the package manager inside the Container and installs all the dependencies and precompiles them.
-4. Docker uses the ENTRYPOINT and CMD to start your your code.
+1. Docker pulls and creates a Container by using "Julia:latest" from Docker Hub.
+2. based on which python-packages you put in your enviroment.yml a python enviroment gets created
 
-## How to end?
+## How to stop the docker?
 To end the project, you have to run the following command in your favorite terminal:
     docker-compose down --remove-orphans
 
@@ -27,8 +25,8 @@ You don't have to remove the containers, because they will be removed automatica
 Download the package
 Unpack the zip
 Change the folder name to your project name.
-Delete Manifest and Project.toml
-CMD "julia" + "]" + "activate ." 
+enviroments.yml:
+-> put your python packages in here
 docker-compose.yml:
 -> Change the port
 -> "julia-docker" to a different docker image name if you want
@@ -37,5 +35,4 @@ docker-compose.yml:
 
 ## How to use it without Docker?
 1. Install all requirements (Your Python version [Default 3.7] and packages)-> cmd in the same folder where the enviroment.yml is and "conda activate condaDockerEnvironment"
-2. CMD "julia" + "]" + "activate ."
-3. Run by cmd "julia src/docker_runs_check.jl"
+2. Run by cmd "julia src/main.jl"

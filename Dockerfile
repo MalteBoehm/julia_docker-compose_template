@@ -1,7 +1,7 @@
-FROM julia:1.6.4
+FROM julia:latest
 
-WORKDIR /app
-ADD / /app
+WORKDIR /root
+ADD / /root
 
 # Start -> Install Miniconda Part 
 ENV PATH="/root/miniconda3/bin:${PATH}"
@@ -20,10 +20,9 @@ RUN conda env create environment.yml
 # End -> Install Your Python Deppendencies Part
 
 # Start -> Install Julia [deps]
-RUN julia ./src/start/config_project.jl
-RUN rm ./src/start/config_project.jl
+RUN julia src/init/init_py.jl
+RUN rm src/init/init_py.jl
 # End -> Install Julia [deps]
-EXPOSE 3838
-
+EXPOSE 3001
 ENTRYPOINT [ "julia" ]
-CMD [ "src/julia_docker_compose_template.jl"]
+CMD [ "src/main.jl"]
