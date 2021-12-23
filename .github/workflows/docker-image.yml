@@ -8,11 +8,29 @@ on:
 
 jobs:
 
-  build:
-
+  test-docker:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
     - name: Test Build the Docker image
       run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      
+  build-push-release:
+   needs: test-docker
+   runs-on: ubuntu-latest
+   
+   steps:
+    - uses: actions/checkout@master
+    - name: Archive Release
+      
+      uses: thedoctor0/zip-release@master
+      with:
+        type: 'zip'
+        filename: 'julia-docker-template.zip'
+        exclusions: '*.github*'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "julia-docker-template.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
