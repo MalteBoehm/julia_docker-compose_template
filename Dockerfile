@@ -20,8 +20,8 @@ RUN conda env create environment.yml
 # End -> Install Your Python Deppendencies Part
 
 # Start -> Install Julia [deps]
-RUN julia src/init/init_py.jl
-RUN rm src/init/init_py.jl
+RUN julia src/init/init_packages.jl
+RUN rm src/init/init_packages.jl
 # End -> Install Julia [deps]
 EXPOSE 3001
 ENTRYPOINT [ "julia" ]

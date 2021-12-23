@@ -46,4 +46,5 @@ How to use it without Docker?
 -----------------------------
 
 1.  Install all requirements (Your Python version \[Default 3.7\] and packages)-> cmd in the same folder where the enviroment.yml is and "conda activate condaDockerEnvironment"
-2.  Run by cmd "julia src/main.jl"
+2. Install all Julia packages in src/init/init_packages.jl by adding "Pkg.add("PackageName")
+3.  Run by cmd "julia src/main.jl"
