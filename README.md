@@ -7,7 +7,6 @@ Use this template to:
 *   **with Docke**r
 *   and **Docker-Compose**
 *   and your **custom Python environment.**
-
   
 
 Requirements
